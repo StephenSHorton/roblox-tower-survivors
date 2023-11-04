@@ -1,51 +1,21 @@
 import { OnStart } from "@flamework/core";
-import { Component, BaseComponent } from "@flamework/components";
-import utils from "server/modules/utils";
+import { Component } from "@flamework/components";
+import { Mortal, MortalAtrributes, MortalInstance } from "./base/Mortal";
+import constants from "server/modules/constants";
 
-interface TowerInstance extends Model {
-	PrimaryPart: Part;
-}
+interface TowerInstance extends MortalInstance {}
 
-interface Attributes {
-	Owner: Player;
-	Health: number;
-	MaxHealth: number;
-	HealthRegen: number;
-	Armor: number;
-	ArmorType: ArmorType;
-}
+interface Attributes extends MortalAtrributes {}
 
 @Component({
 	tag: "Tower",
 })
-export class Tower extends BaseComponent<Attributes, TowerInstance> implements OnStart {
+export class Tower extends Mortal<Attributes, TowerInstance> implements OnStart {
 	onStart() {
-		print("Tower component started");
-	}
-
-	attack(target: Instance) {
-		// TODO target should probably be a component with a damage method
-	}
-
-	damage(amount: number, type: AttackType) {
-		const armor = this.instance.GetAttribute("Armor") as number | undefined;
-		if (!armor) return error("Armor is missing");
-		const armorType = this.instance.GetAttribute("ArmorType") as ArmorType | undefined;
-		if (!armorType) return error("ArmorType is missing");
-		const health = this.instance.GetAttribute("Health") as number | undefined;
-		if (!health) return error("Health is missing");
-
-		const totalDamage = utils.calculateDamage(amount, type, armor, armorType);
-
-		const newHealth = health - totalDamage;
-		this.onHealthChange(newHealth);
-	}
-
-	onHealthChange(newHealth: number) {
-		this.instance.SetAttribute("Health", newHealth);
-		if (newHealth <= 0) {
-			// TODO communicate this, also explode or something
-			this.destroy();
-		}
+		// this.maid.GiveTask(this.instance.AttributeChanged.Connect((attribute) => {
+		// 	if (attribute === "Health") {
+		// 		print("Tower health changed " + this.attributes.Health);
+		// 	}
+		// }))
 	}
 }

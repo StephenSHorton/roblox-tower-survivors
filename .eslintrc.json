@@ -16,7 +16,7 @@
 		"plugin:prettier/recommended"
 	],
 	"rules": {
-		"prettier/prettier": "warn",
+		"prettier/prettier": "off",
 		"roblox-ts/lua-truthiness": "off"
 	}
 }
