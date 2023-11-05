@@ -8,7 +8,7 @@
 		"project": "./tsconfig.json"
 	},
 	"ignorePatterns": ["/out"],
-	"plugins": ["@typescript-eslint", "roblox-ts", "prettier"],
+	"plugins": ["@typescript-eslint", "roblox-ts", "prettier", "unused-imports", "simple-import-sort"],
 	"extends": [
 		"eslint:recommended",
 		"plugin:@typescript-eslint/recommended",
@@ -16,7 +16,10 @@
 		"plugin:prettier/recommended"
 	],
 	"rules": {
-		"prettier/prettier": "off",
+		"prettier/prettier": "warn",
+		"unused-imports/no-unused-imports": "warn",
+		"simple-import-sort/imports": "warn",
+		"simple-import-sort/exports": "warn",
 		"roblox-ts/lua-truthiness": "off"
 	}
 }

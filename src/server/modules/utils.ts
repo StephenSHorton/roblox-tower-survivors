@@ -1,4 +1,4 @@
-import constants from "./constants"
+import constants from "./constants";
 
 const damageMatrix = {
 	Normal: { Light: 1, Medium: 1.5, Heavy: 1, Fortified: 0.7, Hero: 1, Unarmored: 1 },
@@ -10,7 +10,12 @@ const damageMatrix = {
 } as const;
 
 const utils = {
-	calculateDamage(attackAmount: number, attackType: typeof constants.AttackTypes[number], armorAmount: number, armorType: typeof constants.ArmorTypes[number]): number {
+	calculateDamage(
+		attackAmount: number,
+		attackType: (typeof constants.AttackTypes)[number],
+		armorAmount: number,
+		armorType: (typeof constants.ArmorTypes)[number],
+	): number {
 		const damageMultiplier = damageMatrix[attackType][armorType];
 		const armorMultiplier =
 			armorAmount > 0 ? 1 - (armorAmount * 0.06) / (1 + 0.06 * armorAmount) : 2 - math.pow(0.94, -armorAmount);
@@ -29,7 +34,7 @@ const utils = {
 			}
 		}
 		return baseParts;
-	}
+	},
 };
 
 export default utils;

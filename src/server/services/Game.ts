@@ -1,78 +1,75 @@
 import { Components } from "@flamework/components";
-import { Service, OnStart, Dependency } from "@flamework/core";
-import { Enemy } from "server/components/Enemy";
+import { Dependency, OnStart, Service } from "@flamework/core";
+import { PhysicsService, Players, ServerStorage } from "@rbxts/services";
 import { Tower } from "server/components/Tower";
+
 import { WaveService } from "./WaveService";
-import utils from "server/modules/utils";
 
-const WAVE_INTERVAL = 10
+const WAVE_INTERVAL = 10;
 
-const PlayerService = game.GetService("Players")
-const ServerStorage = game.GetService("ServerStorage")
-const PhysicsService = game.GetService("PhysicsService")
-const towerPrefab = ServerStorage.WaitForChild("Tower")
+const towerPrefab = ServerStorage.WaitForChild("Tower");
 
 @Service({})
 export class Game implements OnStart {
-  private gameIsRunning = false
-  private players = new Map<Player['UserId'], Tower>()
+	private gameIsRunning = false;
+	private players = new Map<Player["UserId"], Tower>();
 
-  constructor(private WaveService: WaveService) {}
+	constructor(private WaveService: WaveService) {}
 
-  onStart() {
-    // Register collision group for players
-    PhysicsService.RegisterCollisionGroup("Player")
-    PhysicsService.CollisionGroupSetCollidable("Player", "Enemy", false)
+	onStart() {
+		// Register collision group for players
+		PhysicsService.RegisterCollisionGroup("Player");
+		PhysicsService.CollisionGroupSetCollidable("Player", "Enemy", false);
 
-    this.waitForPlayers()
+		this.waitForPlayers();
 
-    this.gameIsRunning = true
+		this.gameIsRunning = true;
 
-    const towers: Tower[] = []
-    this.players.forEach(tower => {
-      towers.push(tower)
-    })
-    
-    while (this.gameIsRunning) {
-      this.WaveService.SpawnWave(0, towers)
-      wait(WAVE_INTERVAL)
-    }
-  }
+		const towers: Tower[] = [];
+		this.players.forEach((tower) => {
+			towers.push(tower);
+		});
 
-  private waitForPlayers(count = 1) {
-    PlayerService.PlayerAdded.Connect((player) => {
-      print("Player added: " + player.Name)
-      this.changePlayerCollisions(player)
-      this.addPlayer(player)
-    })
+		while (this.gameIsRunning) {
+			this.WaveService.SpawnWave(0, towers);
+			wait(WAVE_INTERVAL);
+		}
+	}
 
-    if (PlayerService.GetPlayers().size() < count) {
-      print("Waiting for more players... " + count)
-      wait(2)
-      this.waitForPlayers(count)
-    }
-  }
+	private waitForPlayers(count = 1) {
+		Players.PlayerAdded.Connect((player) => {
+			print("Player added: " + player.Name);
+			this.changePlayerCollisions(player);
+			this.addPlayer(player);
+		});
 
-  private addPlayer(player: Player) {
-    const components = Dependency<Components>()
-    const towerInstance = towerPrefab.Clone()
-    const tower = components.getComponent<Tower>(towerInstance) || components.addComponent<Tower>(towerInstance)
-    tower.instance.Parent = game.Workspace
-    this.players.set(player.UserId, tower)
-  }
+		if (Players.GetPlayers().size() < count) {
+			print("Waiting for more players... " + count);
+			wait(2);
+			this.waitForPlayers(count);
+		}
+	}
 
-  private changePlayerCollisions(player: Player) {
-    player.CharacterAdded.Connect((character) => {
-      for (const part of character.GetDescendants()) {
-        if (part.IsA("BasePart")) {
-          part.CollisionGroup = "Player"
-        }
-      }
-      character.DescendantAdded.Connect((part) => {
-        if (part.IsA("BasePart")) {
-          part.CollisionGroup = "Player"
-        }
-      })
-    })
-  }
+	private addPlayer(player: Player) {
+		const components = Dependency<Components>();
+		const towerInstance = towerPrefab.Clone();
+		const tower = components.getComponent<Tower>(towerInstance) || components.addComponent<Tower>(towerInstance);
+		tower.instance.Parent = game.Workspace;
+		this.players.set(player.UserId, tower);
+	}
+
+	private changePlayerCollisions(player: Player) {
+		player.CharacterAdded.Connect((character) => {
+			for (const part of character.GetDescendants()) {
+				if (part.IsA("BasePart")) {
+					part.CollisionGroup = "Player";
+				}
+			}
+			character.DescendantAdded.Connect((part) => {
+				if (part.IsA("BasePart")) {
+					part.CollisionGroup = "Player";
+				}
+			});
+		});
+	}
 }

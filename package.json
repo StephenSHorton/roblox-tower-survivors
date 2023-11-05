@@ -15,10 +15,12 @@
 		"@rbxts/types": "^1.0.729",
 		"@typescript-eslint/eslint-plugin": "^6.9.1",
 		"@typescript-eslint/parser": "^6.9.1",
-		"eslint": "^8.52.0",
+		"eslint": "^8.53.0",
 		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-prettier": "^5.0.1",
 		"eslint-plugin-roblox-ts": "^0.0.36",
+		"eslint-plugin-simple-import-sort": "^10.0.0",
+		"eslint-plugin-unused-imports": "^3.0.0",
 		"prettier": "^3.0.3",
 		"rbxts-transformer-flamework": "=1.0.0-beta.24",
 		"roblox-ts": "^2.2.0",
@@ -27,6 +29,10 @@
 	"dependencies": {
 		"@flamework/components": "=1.0.0-beta.24",
 		"@flamework/core": "=1.0.0-beta.24",
-		"@flamework/networking": "=1.0.0-beta.24"
+		"@flamework/networking": "=1.0.0-beta.24",
+		"@rbxts/react-roblox": "^0.2.0",
+		"@rbxts/ripple": "^0.7.1",
+		"@rbxts/roact": "npm:@rbxts/react-ts",
+		"@rbxts/services": "^1.5.1"
 	}
 }

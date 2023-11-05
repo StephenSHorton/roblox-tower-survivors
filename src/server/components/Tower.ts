@@ -1,7 +1,7 @@
-import { OnStart } from "@flamework/core";
 import { Component } from "@flamework/components";
+import { OnStart } from "@flamework/core";
+
 import { Mortal, MortalAtrributes, MortalInstance } from "./base/Mortal";
-import constants from "server/modules/constants";
 
 interface TowerInstance extends MortalInstance {}
 
