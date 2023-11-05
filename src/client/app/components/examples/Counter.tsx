@@ -1,8 +1,8 @@
 import Roact, { useState } from "@rbxts/roact";
 
-import { useRem } from "../hooks/use-rem";
-import { fonts } from "../utils/fonts";
-import { palette } from "../utils/palette";
+import { useRem } from "../../hooks/use-rem";
+import { fonts } from "../../utils/fonts";
+import { palette } from "../../utils/palette";
 import Button from "./Button";
 
 const COLORS = [palette.purple, palette.blue, palette.green, palette.yellow, palette.red];

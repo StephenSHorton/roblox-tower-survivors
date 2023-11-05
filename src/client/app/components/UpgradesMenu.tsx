@@ -7,7 +7,15 @@ import { fonts } from "../utils/fonts";
 import { palette } from "../utils/palette";
 import { springs } from "../utils/springs";
 
-interface ButtonProps {
+export function UpgradesMenu() {
+	return (
+		<frame>
+			<MenuButton text="Hey" />
+		</frame>
+	);
+}
+
+interface MenuButtonProps {
 	onClick?: () => void;
 	font?: Font;
 	text?: string;
@@ -20,7 +28,7 @@ interface ButtonProps {
 	children?: Roact.Children;
 }
 
-export default function Button({
+export default function MenuButton({
 	onClick,
 	font = fonts.inter.regular,
 	text,
@@ -31,7 +39,7 @@ export default function Button({
 	position,
 	anchorPoint,
 	children,
-}: ButtonProps) {
+}: MenuButtonProps) {
 	const rem = useRem();
 	const [pressed, setPressed] = useState(false);
 	const [hovered, setHovered] = useState(false);
