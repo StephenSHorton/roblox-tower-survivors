@@ -8,7 +8,7 @@ interface EnemyInstance extends MortalInstance {}
 interface Attributes extends MortalAtrributes {
 	Speed: number;
 }
-
+// TODO - set network owner to nil for all parts
 @Component({
 	tag: "Enemy",
 })

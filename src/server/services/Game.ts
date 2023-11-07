@@ -17,6 +17,7 @@ export class Game implements OnStart {
 	constructor(private WaveService: WaveService) {}
 
 	onStart() {
+		return;
 		// Register collision group for players
 		PhysicsService.RegisterCollisionGroup("Player");
 		PhysicsService.CollisionGroupSetCollidable("Player", "Enemy", false);
