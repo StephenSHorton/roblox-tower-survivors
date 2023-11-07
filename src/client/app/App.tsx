@@ -1,12 +1,12 @@
 import Roact from "@rbxts/roact";
 
-import { Counter } from "./components/examples/Counter";
 import { Layer } from "./components/Layer";
+import { UpgradesMenu } from "./components/UpgradesMenu";
 
 export default function App() {
 	return (
 		<Layer>
-			<Counter key="counter" />
+			<UpgradesMenu />
 		</Layer>
 	);
 }

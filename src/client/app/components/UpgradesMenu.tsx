@@ -1,97 +1,31 @@
-import Roact, { useEffect, useState } from "@rbxts/roact";
+import Roact from "@rbxts/roact";
 
-import { useMotion } from "../hooks/use-motion";
 import { useRem } from "../hooks/use-rem";
-import { brighten } from "../utils/colors";
 import { fonts } from "../utils/fonts";
 import { palette } from "../utils/palette";
-import { springs } from "../utils/springs";
+import Button from "./Button";
 
 export function UpgradesMenu() {
-	return (
-		<frame>
-			<MenuButton text="Hey" />
-		</frame>
-	);
-}
-
-interface MenuButtonProps {
-	onClick?: () => void;
-	font?: Font;
-	text?: string;
-	textSize?: number;
-	textColor?: Color3;
-	backgroundColor?: Color3;
-	size?: UDim2;
-	position?: UDim2;
-	anchorPoint?: Vector2;
-	children?: Roact.Children;
-}
-
-export default function MenuButton({
-	onClick,
-	font = fonts.inter.regular,
-	text,
-	textSize,
-	textColor = palette.white,
-	backgroundColor = palette.blue,
-	size,
-	position,
-	anchorPoint,
-	children,
-}: MenuButtonProps) {
 	const rem = useRem();
-	const [pressed, setPressed] = useState(false);
-	const [hovered, setHovered] = useState(false);
-	const [buttonPosition, buttonPositionMotion] = useMotion(0);
-	const [buttonColor, buttonColorMotion] = useMotion(backgroundColor);
-
-	useEffect(() => {
-		if (pressed) {
-			buttonPositionMotion.spring(rem(0.5), springs.responsive);
-			buttonColorMotion.spring(brighten(backgroundColor, -0.1), springs.responsive);
-		} else if (hovered) {
-			buttonPositionMotion.spring(rem(-0.5), springs.responsive);
-			buttonColorMotion.spring(brighten(backgroundColor, 0.1), springs.responsive);
-		} else {
-			buttonPositionMotion.spring(0, springs.responsive);
-			buttonColorMotion.spring(backgroundColor, springs.responsive);
-		}
-	}, [pressed, hovered, backgroundColor, rem]);
-
-	useEffect(() => {
-		if (!pressed && hovered) {
-			buttonPositionMotion.impulse(rem(-0.05));
-			buttonPositionMotion.spring(rem(-0.5), springs.bubbly);
-		}
-	}, [pressed]);
 
 	return (
-		<frame BackgroundTransparency={1} AnchorPoint={anchorPoint} Size={size} Position={position}>
-			<textbutton
-				key="button"
-				FontFace={font}
-				Text={text}
-				TextColor3={textColor}
-				TextSize={textSize}
-				AutoButtonColor={false}
-				BackgroundColor3={buttonColor}
-				Size={new UDim2(1, 0, 1, 0)}
-				Position={buttonPosition.map((y) => new UDim2(0, 0, 0, y))}
-				Event={{
-					Activated: onClick,
-					MouseEnter: () => setHovered(true),
-					MouseLeave: () => {
-						setHovered(false);
-						setPressed(false);
-					},
-					MouseButton1Down: () => setPressed(true),
-					MouseButton1Up: () => setPressed(false),
-				}}
-			>
-				<uicorner key="button-corner" CornerRadius={new UDim(0, rem(1))} />
-				{children}
-			</textbutton>
+		<frame
+			Size={new UDim2(0, 200, 0, 100)}
+			AnchorPoint={new Vector2(1, 1)}
+			Position={new UDim2(1, 0, 1, 0)}
+			BackgroundColor3={palette.white}
+			BackgroundTransparency={0.8}
+		>
+			<Button
+				font={fonts.inter.medium}
+				text="1️⃣"
+				textSize={rem(2)}
+				textColor={palette.white}
+				backgroundColor={palette.white}
+				size={new UDim2(0, rem(5), 0, rem(5))}
+				position={new UDim2(1, 0, 1, 0)}
+				anchorPoint={new Vector2(1, 1)}
+			/>
 		</frame>
 	);
 }

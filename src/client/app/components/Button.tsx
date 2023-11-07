@@ -1,11 +1,11 @@
 import Roact, { useEffect, useState } from "@rbxts/roact";
 
-import { useMotion } from "../../hooks/use-motion";
-import { useRem } from "../../hooks/use-rem";
-import { brighten } from "../../utils/colors";
-import { fonts } from "../../utils/fonts";
-import { palette } from "../../utils/palette";
-import { springs } from "../../utils/springs";
+import { useMotion } from "../hooks/use-motion";
+import { useRem } from "../hooks/use-rem";
+import { brighten } from "../utils/colors";
+import { fonts } from "../utils/fonts";
+import { palette } from "../utils/palette";
+import { springs } from "../utils/springs";
 
 interface ButtonProps {
 	onClick?: () => void;
@@ -40,10 +40,10 @@ export default function Button({
 
 	useEffect(() => {
 		if (pressed) {
-			buttonPositionMotion.spring(rem(0.5), springs.responsive);
+			buttonPositionMotion.spring(rem(0.25), springs.responsive);
 			buttonColorMotion.spring(brighten(backgroundColor, -0.1), springs.responsive);
 		} else if (hovered) {
-			buttonPositionMotion.spring(rem(-0.5), springs.responsive);
+			buttonPositionMotion.spring(rem(-0.24), springs.responsive);
 			buttonColorMotion.spring(brighten(backgroundColor, 0.1), springs.responsive);
 		} else {
 			buttonPositionMotion.spring(0, springs.responsive);
@@ -53,8 +53,8 @@ export default function Button({
 
 	useEffect(() => {
 		if (!pressed && hovered) {
-			buttonPositionMotion.impulse(rem(-0.05));
-			buttonPositionMotion.spring(rem(-0.5), springs.bubbly);
+			buttonPositionMotion.impulse(rem(-0.01));
+			buttonPositionMotion.spring(rem(-0.25), springs.bubbly);
 		}
 	}, [pressed]);
 
@@ -81,7 +81,7 @@ export default function Button({
 					MouseButton1Up: () => setPressed(false),
 				}}
 			>
-				<uicorner key="button-corner" CornerRadius={new UDim(0, rem(1))} />
+				<uicorner key="button-corner" CornerRadius={new UDim(0, rem(0.5))} />
 				{children}
 			</textbutton>
 		</frame>
