@@ -8,14 +8,7 @@ import App from "./app/App";
 const root = createRoot(new Instance("Folder"));
 const target = Players.LocalPlayer.WaitForChild("PlayerGui");
 
-root.render(
-	createPortal(
-		<StrictMode>
-			<App key="app" />
-		</StrictMode>,
-		target,
-	),
-);
+root.render(createPortal(<StrictMode>{/* <App key="app" /> */}</StrictMode>, target));
 
 Flamework.addPaths("src/client/components");
 Flamework.addPaths("src/client/controllers");
