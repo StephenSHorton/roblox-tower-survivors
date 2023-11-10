@@ -7,6 +7,7 @@ const cannonPart = game.Workspace.WaitForChild("Cannon") as Part;
 @Service({})
 export class Test implements OnStart {
 	onStart() {
+		return;
 		Players.PlayerAdded.Connect((player) => {
 			const character = player.Character || player.CharacterAdded.Wait()[0];
 

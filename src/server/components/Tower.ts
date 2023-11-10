@@ -11,11 +11,5 @@ interface Attributes extends MortalAtrributes {}
 	tag: "Tower",
 })
 export class Tower extends Mortal<Attributes, TowerInstance> implements OnStart {
-	onStart() {
-		// this.maid.GiveTask(this.instance.AttributeChanged.Connect((attribute) => {
-		// 	if (attribute === "Health") {
-		// 		print("Tower health changed " + this.attributes.Health);
-		// 	}
-		// }))
-	}
+	onStart() {}
 }

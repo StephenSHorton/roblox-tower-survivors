@@ -1,12 +1,12 @@
 import { Components } from "@flamework/components";
 import { Dependency, OnStart, Service } from "@flamework/core";
-import { PhysicsService, Players, ServerStorage } from "@rbxts/services";
+import Object from "@rbxts/object-utils";
+import { PhysicsService, Players, RunService, ServerStorage } from "@rbxts/services";
 import { Tower } from "server/components/Tower";
 
 import { WaveService } from "./WaveService";
 
 const WAVE_INTERVAL = 10;
-
 const towerPrefab = ServerStorage.WaitForChild("Tower");
 
 @Service({})
@@ -17,38 +17,35 @@ export class Game implements OnStart {
 	constructor(private WaveService: WaveService) {}
 
 	onStart() {
-		return;
-		// Register collision group for players
+		// Removed 'return;' to allow the following initialization code to run
 		PhysicsService.RegisterCollisionGroup("Player");
 		PhysicsService.CollisionGroupSetCollidable("Player", "Enemy", false);
 
 		this.waitForPlayers();
-
-		this.gameIsRunning = true;
-
-		const towers: Tower[] = [];
-		this.players.forEach((tower) => {
-			towers.push(tower);
-		});
-
-		while (this.gameIsRunning) {
-			this.WaveService.SpawnWave(0, towers);
-			wait(WAVE_INTERVAL);
-		}
+		this.startGameLoop();
 	}
 
 	private waitForPlayers(count = 1) {
-		Players.PlayerAdded.Connect((player) => {
-			print("Player added: " + player.Name);
+		// Changed to an event-based waiting mechanism
+		const playerAddedConnection = Players.PlayerAdded.Connect((player) => {
+			if (Players.GetPlayers().size() >= count) {
+				playerAddedConnection.Disconnect(); // Disconnect the event once we have enough players
+				this.startGameLoop();
+			}
 			this.changePlayerCollisions(player);
 			this.addPlayer(player);
 		});
+	}
 
-		if (Players.GetPlayers().size() < count) {
-			print("Waiting for more players... " + count);
-			wait(2);
-			this.waitForPlayers(count);
-		}
+	private startGameLoop() {
+		this.gameIsRunning = true;
+		RunService.Heartbeat.Connect(() => {
+			while (this.gameIsRunning) {
+				wait(WAVE_INTERVAL); // Yield the loop to wait for the next wave
+				const towers: Tower[] = [...Object.values(this.players)];
+				this.WaveService.SpawnWave(0, towers);
+			}
+		});
 	}
 
 	private addPlayer(player: Player) {
